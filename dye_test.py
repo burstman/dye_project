@@ -58,11 +58,35 @@ if st.button("Predict"):
     )
 
     # Make predictions
-    prediction = model.predict(input_df)
-    predicted_class = np.argmax(prediction, axis=1)
+    predictions = model.predict(input_df)
+    # predicted_class = np.argmax(prediction, axis=1)
 
-    # Convert the encoded labels back to the original class labels
-    decoded_prediction = le_class.inverse_transform(predicted_class)
+    # # Convert the encoded labels back to the original class labels
+    # decoded_prediction = le_class.inverse_transform(predicted_class)
 
-    st.write("Prediction:")
-    st.write(decoded_prediction)
+    # st.write("Prediction:")
+    # st.write(decoded_prediction)
+
+    # Get top 3 predicted classes and their associated probabilities for each sample
+    top_3_predictions = np.argsort(predictions, axis=1)[:, -3:][
+        :, ::-1
+    ]  # Get indices of top 3 predictions
+    top_3_probabilities = np.sort(predictions, axis=1)[:, -3:][
+        :, ::-1
+    ]  # Get top 3 probabilities
+
+    # Decode the class labels for top 3 predictions
+    decoded_top_3 = le_class.inverse_transform(top_3_predictions.flatten()).reshape(
+        top_3_predictions.shape
+    )
+
+    # Display predictions with their percentages
+    st.write("Top 3 Predicted Decisions with Probabilities:")
+
+    for i, row in enumerate(decoded_top_3):
+        st.write(f"Sample {i+1}:")
+        for j in range(3):
+            class_name = row[j]
+            probability = top_3_probabilities[i][j] * 100  # Convert to percentage
+            st.write(f"{j+1}) {class_name}: {probability:.2f}%")
+        st.write("\n")
