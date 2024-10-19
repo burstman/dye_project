@@ -7,7 +7,7 @@ from sklearn.preprocessing import LabelEncoder
 
 @st.cache_resource
 def load_cached_model():
-    return load_model("dye_options.keras")
+    return load_model("best_model.h5")
 
 
 try:
@@ -18,7 +18,7 @@ except Exception as e:
 
 # Load the LabelEncoder for 'couleur' (input)
 le_couleur = LabelEncoder()
-le_couleur.classes_ = np.load("color_mapping.npy", allow_pickle=True)
+le_couleur.classes_ = np.load("color_mapping (1).npy", allow_pickle=True)
 print(le_couleur.classes_)
 
 available_colors = le_couleur.classes_.tolist()
@@ -31,9 +31,9 @@ le_class.classes_ = np.load("output.npy", allow_pickle=True)
 print(le_class.classes_)
 
 # Streamlit UI
-st.title("Garment Dyeing Decision Prediction")
+st.title("Garment Dyeing Decision Prediction v0.1")
 
-st.write("Or input data manually below:")
+st.write("Input data below:")
 
 # Dropdown menu for color selection
 input_couleur = st.selectbox("Choose a color", options=available_colors)
@@ -45,6 +45,7 @@ if input_couleur:
     input_data.append(encoded_couleur)
 
 # Add additional features if applicable (you can adjust these as per your input data structure)
+input_data.append(st.selectbox("nombre_colori", options=[1, 2, 3]))
 input_data.append(st.number_input("Delta_a"))
 input_data.append(st.number_input("Delte_b"))
 input_data.append(st.number_input("Delta_h"))
@@ -54,7 +55,15 @@ input_data.append(st.number_input("Delta_E"))
 if st.button("Predict"):
     input_df = pd.DataFrame(
         [input_data],
-        columns=["couleur", "Delta_a", "Delte_b", "Delta_h", "Delta_L", "Delta_E"],
+        columns=[
+            "couleur",
+            "nombre_colori",
+            "Delta_a",
+            "Delte_b",
+            "Delta_h",
+            "Delta_L",
+            "Delta_E",
+        ],
     )
 
     # Make predictions
