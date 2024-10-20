@@ -23,7 +23,6 @@ print(le_couleur.classes_)
 
 available_colors = le_couleur.classes_.tolist()
 
-input_colors = st.selectbox("Select a color:", options=available_colors)
 
 # Load the LabelEncoder for class predictions
 le_class = LabelEncoder()
