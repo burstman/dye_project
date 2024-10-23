@@ -7,7 +7,7 @@ from sklearn.preprocessing import LabelEncoder
 
 @st.cache_resource
 def load_cached_model():
-    return load_model("best_model.h5")
+    return load_model("best_model.keras")
 
 
 try:
