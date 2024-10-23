@@ -18,7 +18,7 @@ except Exception as e:
 
 # Load the LabelEncoder for 'couleur' (input)
 le_couleur = LabelEncoder()
-le_couleur.classes_ = np.load("color_mapping (1).npy", allow_pickle=True)
+le_couleur.classes_ = np.load("color_mapping.npy", allow_pickle=True)
 print(le_couleur.classes_)
 
 available_colors = le_couleur.classes_.tolist()
